@@ -31,18 +31,22 @@
       animation: bgShift 30s ease infinite;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      color: white;
+      color: transparent;
       letter-spacing: 2px;
-      text-shadow: 0 0 1px rgba(255,255,255,0.2), 1px 1px 1px black;
-      margin: 20px 0 0; /* tighter bottom margin */
+      margin: 20px 0 0;
     }
 
     #slots {
-      display: flex;
-      justify-content: center;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      max-width: 1000px;
+      margin: 0 auto 20px;
+      text-align: center;
       font-size: 90px;
-      gap: 25px;
-      margin: 0 0 20px; /* pulled closer to header */
+    }
+
+    #slots div {
+      min-width: 200px; /* keeps each slot distinct */
     }
 
     #history {
@@ -71,7 +75,7 @@
       margin: 5px auto 20px;
       font-size: 80px;
       text-transform: uppercase;
-      background: none; /* fully invisible */
+      background: none;
       border: none;
       color: white;
       cursor: pointer;
@@ -115,9 +119,9 @@
   </footer>
 
   <script>
-    const column1 = ["SUPER", "NEO", "HYPER", "CRYPTO", "SHADOW", "LUNAR", "PLASTIC", "NOISE", "BIO", "META", "ULTRA", "NANO", "MYSTIC", "GLITCH", "COSMIC", "PROTO"];
-    const column2 = ["GOTHIC", "FUTURE", "TRASH", "BAROQUE", "SOFT", "HARD", "NEW", "POST", "VIRTUAL", "ANALOG", "BUBBLE", "SYNTH", "CHAOS", "PLUSH", "WIRED", "ACID"];
-    const column3 = ["CORE", "STYLE", "AESTHETIC", "PUNK", "GAZE", "ISM", "GALAXY", "WAVE", "VIBE", "BOOGIE", "SCAPE", "TECH", "TONE", "VISION", "SHIFT", "REALM", "PULSE", "MOOD", "NOIR", "TYPE", "MOVEMENT", "TREND"];
+    const column1 = ["SUPER", "NEO", "HYPER", "CRYPTO", "SHADOW", "LUNAR", "NEW", "POST", "PLASTIC",  "BIO", "META", "ULTRA", "NANO", "MYSTIC", "GLITCH", "COSMIC", "PROTO"];
+    const column2 = ["GOTHIC", "FUTURE", "TRASH", "BAROQUE", "SOFT", "HARD", "NOISE", "VIRTUAL", "ANALOG", "BUBBLE", "SYNTH", "FOLK", "PLUSH", "WIRED", "ACID"];
+    const column3 = ["CORE", "STYLE", "AESTHETIC", "PUNK", "GAZE", "GALAXY", "WAVE", "VIBE", "BOOGIE", "SCAPE", "TECH", "TONE", "VISION", "SHIFT", "REALM", "PULSE", "MOOD", "NOIR", "TYPE", "MOVEMENT", "TREND"];
 
     const colors = ["lime", "magenta", "cyan", "orange", "yellow", "violet", "#39ff14", "#ff073a", "#00f0ff", "#ff8200", "#da00ff", "#ffd700"];
 
@@ -151,22 +155,25 @@
       spinColumn(col1, column1, 1500, () => {
         spinColumn(col2, column2, 2500, () => {
           spinColumn(col3, column3, 3500, () => {
-            const phrase = `${col1.textContent} ${col2.textContent} ${col3.textContent}`;
-            if (historyIndex < 6) {
-              document.getElementById("h" + (historyIndex + 1)).textContent = phrase;
-              document.getElementById("h" + (historyIndex + 1)).style.color = color;
-              historyIndex++;
-            } else {
-              for (let i = 1; i < 6; i++) {
-                document.getElementById("h" + i).textContent = document.getElementById("h" + (i + 1)).textContent;
-                document.getElementById("h" + i).style.color = document.getElementById("h" + (i + 1)).style.color;
+            // after all three finish, wait 1 second before adding to history
+            setTimeout(() => {
+              const phrase = `${col1.textContent} ${col2.textContent} ${col3.textContent}`;
+              if (historyIndex < 6) {
+                document.getElementById("h" + (historyIndex + 1)).textContent = phrase;
+                document.getElementById("h" + (historyIndex + 1)).style.color = color;
+                historyIndex++;
+              } else {
+                for (let i = 1; i < 6; i++) {
+                  document.getElementById("h" + i).textContent = document.getElementById("h" + (i + 1)).textContent;
+                  document.getElementById("h" + i).style.color = document.getElementById("h" + (i + 1)).style.color;
+                }
+                document.getElementById("h6").textContent = phrase;
+                document.getElementById("h6").style.color = color;
               }
-              document.getElementById("h6").textContent = phrase;
-              document.getElementById("h6").style.color = color;
-            }
-            col1.style.color = color;
-            col2.style.color = color;
-            col3.style.color = color;
+              col1.style.color = color;
+              col2.style.color = color;
+              col3.style.color = color;
+            }, 1000);
           });
         });
       });
@@ -174,7 +181,6 @@
   </script>
 </body>
 </html>
-
 
 
 
