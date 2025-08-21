@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Style Trials</title>
+  <title>Style Lab</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&display=swap');
 
@@ -22,7 +22,13 @@
       50% { background-position: 100% 50%; }
       100% { background-position: 0% 50%; }
     }
-
+	  
+    @keyframes rainbowGradient {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+	  
     h1 {
       font-size: 120px;
       text-align: center;
@@ -36,24 +42,36 @@
       margin: 20px 0 0;
     }
 
+    /* ---- FIXED HEIGHT CONTAINER FOR SPINNING WORDS ---- */
     #slots {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
       max-width: 1000px;
-      margin: 0 auto 20px;
-      text-align: center;
-      font-size: 90px;
+      margin: 0 auto 40px; /* push GO + history lower */
     }
 
-    #slots div {
-      min-width: 200px;
+    #slots .column {
+      position: relative;
+      width: 250px;   /* fixed column width */
+      height: 120px;  /* locks the height so layout doesn’t bounce */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 50px;
+    }
+
+    #slots .column span {
+      position: absolute; /* prevents text from pushing layout */
+      text-align: center;
+      line-height: 1;
     }
 
     #history {
-      max-width: 1000px;
-      margin: 0 auto;
+      max-width: 1200px;
+      margin: 20px auto 0;
       text-align: left;
-      font-size: 60px;
+      font-size: 50px;
       line-height: 1.1;
     }
 
@@ -72,25 +90,52 @@
 
     #go {
       display: block;
-      margin: 5px auto 20px;
-      font-size: 80px;
+      margin: 10px auto 30px;
+      font-size: 90px;
       text-transform: uppercase;
-      background: none;
+      background: linear-gradient(
+        270deg,
+        red, orange, yellow, green, cyan, blue, violet, red
+      );
+      background-size: 600% 600%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      color: transparent;
       border: none;
-      color: white;
       cursor: pointer;
       font-family: 'Roboto Condensed', sans-serif;
-      animation: floaty 3s infinite ease-in-out;
+      animation: floaty 0.6s infinite, rainbowGradient 6s infinite linear;
     }
 
     @keyframes floaty {
-      0%, 100% { transform: translateY(0) translateX(0); }
-      25% { transform: translateY(-5px) translateX(5px); }
-      50% { transform: translateY(5px) translateX(-5px); }
-      75% { transform: translateY(-5px) translateX(-5px); }
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      10% { transform: translate(-2px, 2px) rotate(-2deg); }
+      20% { transform: translate(2px, -2px) rotate(2deg); }
+      30% { transform: translate(-3px, 1px) rotate(-1deg); }
+      40% { transform: translate(3px, -1px) rotate(1deg); }
+      50% { transform: translate(-2px, 2px) rotate(-2deg); }
+      60% { transform: translate(2px, -2px) rotate(2deg); }
+      70% { transform: translate(-1px, 1px) rotate(-1deg); }
+      80% { transform: translate(1px, -1px) rotate(1deg); }
+      90% { transform: translate(-2px, 2px) rotate(1deg); }
+    }
+	  
+    @keyframes shakeHarder {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      10% { transform: translate(-4px, 4px) rotate(-4deg); }
+      20% { transform: translate(4px, -4px) rotate(4deg); }
+      30% { transform: translate(-5px, 2px) rotate(-3deg); }
+      40% { transform: translate(5px, -2px) rotate(3deg); }
+      50% { transform: translate(-4px, 4px) rotate(-4deg); }
+      60% { transform: translate(4px, -4px) rotate(4deg); }
+      70% { transform: translate(-3px, 3px) rotate(-3deg); }
+      80% { transform: translate(3px, -3px) rotate(3deg); }
+      90% { transform: translate(-5px, 2px) rotate(-2deg); }
     }
 
     footer {
+	max-width: 1200px;
       text-align: center;
       margin: 40px auto;
       font-size: 20px;
@@ -104,14 +149,13 @@
         margin-top: 10px;
       }
       #slots {
-        display: flex;
         flex-direction: column;
         align-items: center;
-        font-size: 60px;
-        gap: 10px;
       }
-      #slots div {
-        min-width: auto;
+      #slots .column {
+        width: auto;
+        height: 80px; /* smaller fixed height for mobile */
+        font-size: 50px;
       }
       #history {
         font-size: 30px;
@@ -126,14 +170,16 @@
   </style>
 </head>
 <body>
-  <h1>STYLE TRIALS</h1>
+  <h1>STYLE LAB</h1>
   <div id="slots">
-    <div id="col1">WHAT</div>
-    <div id="col2">IS</div>
-    <div id="col3">STYLE?</div>
+    <div class="column"><span id="col1">WHAT</span></div>
+    <div class="column"><span id="col2">IS</span></div>
+    <div class="column"><span id="col3">STYLE?</span></div>
   </div>
-  <button id="go">GO</button>
-  <div id="history">
+
+<button id="go">GO</button>
+
+<div id="history">
     <div class="set"><span class="set-number">1.</span><span id="h1"></span></div>
     <div class="set"><span class="set-number">2.</span><span id="h2"></span></div>
     <div class="set"><span class="set-number">3.</span><span id="h3"></span></div>
@@ -141,16 +187,17 @@
     <div class="set"><span class="set-number">5.</span><span id="h5"></span></div>
     <div class="set"><span class="set-number">6.</span><span id="h6"></span></div>
   </div>
+
   <footer>
-    STYLE TRIALS is a laboratory for aesthetic experimentation.
-  </footer>
+  STYLE LAB is a laboratory for aesthetic experimentation and a tool for generating combinations of movements and trends in art, design, and culture. Both <a href="https://cari.institute/">CARI</a> and <a href="https://aesthetics.fandom.com/wiki/Aesthetics_Wiki">AESTHETICS WIKI</a> were critical resources in the making of STYLE LAB.&nbsp; </footer>
 
   <script>
-    const column1 = ["SUPER", "NEO", "HYPER", "CRYPTO", "SHADOW", "LUNAR", "NEW", "POST", "PLASTIC",  "BIO", "META", "ULTRA", "NANO", "MYSTIC", "GLITCH", "COSMIC", "PROTO"];
-    const column2 = ["GOTHIC", "FUTURE", "TRASH", "BAROQUE", "SOFT", "HARD", "NOISE", "VIRTUAL", "ANALOG", "BUBBLE", "SYNTH", "FOLK", "PLUSH", "WIRED", "ACID"];
-    const column3 = ["CORE", "STYLE", "AESTHETIC", "PUNK", "GAZE", "GALAXY", "WAVE", "VIBE", "BOOGIE", "SCAPE", "TECH", "TONE", "VISION", "SHIFT", "REALM", "PULSE", "MOOD", "NOIR", "TYPE", "MOVEMENT", "TREND"];
+    const column1 = ["SUPER", "AIRBRUSH", "AUTO", "CLOUD", "ANTI", "WEIRD", "NEO", "HYPER", "CRYPTO", "ACID", "SHADOW", "LUNAR", "NEON", "NEW", "POST", "PLASTIC",  "BIO", "META", "ULTRA", "NANO", "CANDY","DIGITAL", "INDIE", "CLUMSY", "ART SCHOOL", "MYSTIC", "GLITCH", "COSMIC", "PROTO","VECTOR", "TIGER", "CUTE", "BOLD", "INDIE", "KITSCH", "LO-TECH", "MINIMAL", "MAXIMAL", "GIGA", "WESTERN", "SOUTHWESTERN", "NEGATIVE", "DEAD", "GRECO-ROMAN","HIGH SCHOOL","LO-FI", "SOUTHERN", "SOFT", "HARD", "GOTHIC", "PULP", "FAKE", "SCANDINAVIAN", "CLASSIC", "DARK", "PLASTIC", "HIGH GLOSS", "GLOSSY", "BLANK", "LOSSY", "CHILLAXED", "GROTESQUE", "ALPHA", "BLOOD", "WILD", "UBER", "ULTRA", "UGLY", "PROFESSOR","TROPICAL", "HYPER", "CORPORATE", "BEAAUTY PAGEANT", "PREHISTORIC"];
+    const column2 = ["FUTURE", "TRASH", "BAROQUE", "JUNKYARD", "NOISE", "VIRTUAL", "ANALOG", "BUBBLE", "SYNTH", "FOLK", "PLUSH", "WIRED", "ACID", "ORGANIC MODERN", "POP", "CAVEMAN", "PREPPY", "DUNGEON", "BANANA", "CAMARO", "NAUTICAL", "SEWER", "SHROOM", "PSYCHEDELIA", "FANTASY", "PUNK", "QUAKER", "ROCOCO", "ROMANESQUE", "SANTA FE", "CHRISTMAS", "STARBUCKS", "MARCHING BAND", "SCI-FI", "SHITPIC", "SKUEMORPHISM", "COLONIAL WANDERLUST", "SPORTSBRUT", "STEAMPUNK", "CAVE", "FLAT", "SURFER", "SURREALIST", "SWISS", "SYNTH", "TEDDY", "UTOPIAN SCHOLASTIC", "VALLEY GIRL", "VAPORWAVE", "VAUDEVILLE", "MINIMALISM", "GENDER", "VICTORIAN", "MEDIEVAL", "WEB 1.0", "WESTERN", "WIGGLE", "Y2K", "GLITCH", "GLOBAL VILLAGE COFFEEHOUSE", "GOBLIN", "CHEWBACCA", "GOOGIE", "GOTH", "GRANOLA GUY", "GRUNGE", "HARAJUKU", "HEAVY METAL", "HIPSTER", "HORROR", "REALISM", "SLEAZE", "INDIECRAFT", "INTERNET AWESOMESAUCE", "BRAINROT", "PANDA", "KAWAII", "MAXIMALISM", "MCBLING", "MEMPHIS", "MIDCENTURY MODERN", "MINIMALISM", "NAIVE", "PASTICHE", "CLASSICAL", "NERD", "OOZE", "NEW AGE", "DUMPSTER", "NORM", "METAL", "8-BIT", "ACID DESIGN", "ACID", "SURREALISM", "AMERICANA", "ANIME", "ART DECO", "ART NOUVEAU", "BAROQUE", "BOHEMIAN", "BRUTALISM", "BUREAUCRATIC", "CARICATURE", "CASSETTE", "COASTAL GRANDMOTHER", "CONSTRUCTIVISM", "CORPORATE", "CORPORATE HIPPIE", "COTTAGE CORE", "CRAFT", "CYBER", "CYBERBOUGIE", "DADA", "DARK ACADEMIA", "DEFAULT", "DE STIJL", "DOLLAR STORE VERNACULAR", "DUNGEON", "EMO", "FRASURBANE", "FRUTIGER AERO", "FUTURISM", "GENERATIVE", "GLAM"];
+    const column3 = ["CORE", "STYLE", "AESTHETIC", "PUNK", "GAZE", "WAVE", "WORLD","LORE", "VORE", "VIBE", "PHD", "BOOGIE", "SCAPE", "TECH", "TONE", "VISION", "SHIFT", "REALM", "PULSE", "MOOD", "NOIR", "TYPE","HORROR", "REALISM", "SLEAZE", "MOVEMENT", "GIRL", "BOY", "TREND", "GRAFIX", "DRIP","VOID","SYNTH"];
 
-    const colors = ["lime", "magenta", "cyan", "orange", "yellow", "violet", "#39ff14", "#ff073a", "#00f0ff", "#ff8200", "#da00ff", "#ffd700"];
+
+    const colors = generateRainbowColors(48);
 
     let historyIndex = 0;
 
@@ -158,6 +205,16 @@
       return array[Math.floor(Math.random() * array.length)];
     }
 
+    // Generate an array of rainbow hues
+    function generateRainbowColors(count = 48, saturation = 100, lightness = 50) {
+      const colors = [];
+      for (let i = 0; i < count; i++) {
+        const hue = Math.round((360 / count) * i); // spread evenly around the color wheel
+        colors.push(`hsl(${hue}, ${saturation}%, ${lightness}%)`);
+      }
+      return colors;
+    }
+	  
     function randomColor() {
       return colors[Math.floor(Math.random() * colors.length)];
     }
@@ -208,4 +265,5 @@
   </script>
 </body>
 </html>
+
 
